@@ -3,9 +3,10 @@ import React from 'react'
 function Newsletter(props) {
   const [email, setEmail] = React.useState('')
   const [emailFocused, setEmailFocused] = React.useState(false)
+  const { width } = useWindowDimensions()
   // const emailPartsCount = countEmailParts(email)
   return (
-    <section style={styles.container()}>
+    <section style={styles.container({ width })}>
       <div style={styles.spectrum()} aria-hidden>
         {Array.from(Array(5)).map((_, i) => (
           <div style={styles.bar({ i })} key={i}></div>
@@ -39,10 +40,10 @@ const color = {
 }
 
 const styles = {
-  container: () => ({
+  container: ({ width }) => ({
     position: 'relative',
-    maxWidth: '100%',
-    fontSize: '1.25em',
+    maxWidth:width >= 800 ? '700px' : '100%',
+    fontSize:width >= 800 ? '2.25em' : '1.25em',
     padding: '1em 1em 2em 1em',
     background: '#2b283d',
   }),
@@ -111,18 +112,30 @@ const styles = {
   }),
 }
 
-// function countEmailParts(email) {
-//   if (/@.+\..{2,}$/.test(email)) {
-//     return 5
-//   } else if (/@.+\..?$/.test(email)) {
-//     return 4
-//   } else if (/@.+$/.test(email)) {
-//     return 3
-//   } else if (/@/.test(email)) {
-//     return 2
-//   } else if (/.+/.test(email)) {
-//     return 1
-//   } else {
-//     return 0
-//   }
-// }
+ function countEmailParts(email) {
+   if (/@.+\..{2,}$/.test(email)) {
+     return 5
+   } else if (/@.+\..?$/.test(email)) {
+     return 4
+   } else if (/@.+$/.test(email)) {
+     return 3
+   } else if (/@/.test(email)) {
+     return 2
+   } else if (/.+/.test(email)) {
+     return 1
+   } else {
+     return 0
+   }
+ }
+function useWindowDimensions() {
+  const [windowDimensions, setWindow] = React.useState({
+    width:window.innerWidth
+  })
+  React.useEffect(() => {
+    function handleResize() {
+      setWindow({ width: window.innerWidth })
+    }
+    window.addEventListener('resize', handleResize)
+  })
+  return windowDimensions
+}
