@@ -4,12 +4,12 @@ function Newsletter(props) {
   const [email, setEmail] = React.useState('')
   const [emailFocused, setEmailFocused] = React.useState(false)
   const { width } = useWindowDimensions()
-  // const emailPartsCount = countEmailParts(email)
+  const emailPartsCount = countEmailParts(email)
   return (
     <section style={styles.container({ width })}>
       <div style={styles.spectrum()} aria-hidden>
         {Array.from(Array(5)).map((_, i) => (
-          <div style={styles.bar({ i })} key={i}></div>
+          <div style={styles.bar({ active: i + 1 <= emailPartsCount, i })} key={i}></div>
         ))}
       </div>
       <header style={styles.header()}>
@@ -57,8 +57,8 @@ const styles = {
     alignItems: 'flex-end',
     pointerEvents: 'none',
   }),
-  bar: ({ i }) => ({
-    height: '0.5em',
+  bar: ({ active, i }) => ({
+    height: active ? '100%' : '0.5em',
     width: '20%',
     transformOrigin: 'bottom',
     transition: 'all 1s',
