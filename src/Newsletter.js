@@ -1,9 +1,13 @@
 import React from 'react'
 
+import { ThemeContext } from './ThemeContext.js'
+
 function Newsletter(props) {
   const [email, setEmail] = React.useState('')
   const [emailFocused, setEmailFocused] = React.useState(false)
   const { width } = useWindowDimensions()
+  const [submitHovered, setSubmitHovered] = React.useState(false)
+  const { theme } = React.useContext(ThemeContext)    
   const emailPartsCount = countEmailParts(email)
   return (
     <section style={styles.container({ width })}>
@@ -12,11 +16,11 @@ function Newsletter(props) {
           <div style={styles.bar({ active: i + 1 <= emailPartsCount, i })} key={i}></div>
         ))}
       </div>
-      <header style={styles.header()}>
+      <header style={styles.header({ theme })}>
         <h2 style={styles.headerH2()}>Get the newsletter</h2>
       </header>
       <input
-        style={styles.email({ focused:emailFocused })}
+        style={styles.email({ theme ,focused:emailFocused })}
         type="email"
         placeholder="Your email"
         value={email}
@@ -75,7 +79,7 @@ const styles = {
   headerH2: () => ({
     margin: '0 0 0.5em 0',
   }),
-  email: ({ focused }) => ({
+  email: ({ theme, focused }) => ({
     position: 'relative',
     height: '2em',
     lineHeight: '2em',
@@ -84,11 +88,11 @@ const styles = {
     width: '100%',
     margin: '0.15em',
     border: '1px solid black',
-    color: 'inherit',
-    background: 'inherit',
-    textAlign: 'inherit',
+    color: theme.input.color || 'inherit',
+    background: theme.input.background || 'inherit',
+    textAlign: theme.input.textAlign || 'inherit',
     outlineOffset: '0.15em',
-    outline: focused ? '2px solid #fff' : 'none',
+    outline: focused ? theme.inputFocus.outline || '2px solid #fff' : 'none',
   }),
   submit: () => ({
     position: 'absolute',

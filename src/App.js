@@ -2,6 +2,7 @@ import React from 'react'
 
 import './App.css'
 import Newsletter from './Newsletter.js'
+import { ThemeProvider } from './ThemeContext.js'
 
 const theme = {
   header: {
@@ -20,7 +21,7 @@ const theme = {
 function App() {
   return (
     <div className="app__newsletter">
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={ theme }>
           <Newsletter />
         </ThemeProvider>      
     </div>
